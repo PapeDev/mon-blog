@@ -11,18 +11,24 @@
 |
 */
 
-Route::get('/', function () {
+Route::get('/home', function () {
     return view('welcome');
 })->name('home');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('welcome');
+Route::get('/', 'HomeController@index')->name('welcome');
 
 Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'admin']], function (){
     Route::get('dashboard', 'DashboardController@index')->name('dashboard');
+    Route::resource('tag', 'TagController');
+    Route::resource('category', 'CategoryController');
+    Route::resource('post', 'PostController');
+    Route::put('/post/{id}/approve', 'PostController@approve')->name('post.approve');
+    Route::get('/pending/post', 'PostController@pending')->name('post.pending');
 });
 
 Route::group(['as' => 'author.', 'prefix' => 'author', 'namespace' => 'Author', 'middleware' => ['auth', 'author']], function (){
     Route::get('dashboard', 'DashboardController@index')->name('dashboard');
+    Route::resource('post', 'PostController');
 });

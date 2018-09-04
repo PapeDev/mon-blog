@@ -44,6 +44,30 @@
                         </a>
                     </li>
                     <li class="header">System</li>
+                    <li class="{{ Request::is('admin/tag') ? 'active' : '' }}">
+                        <a href="{{ route('admin.tag.index') }}">
+                            <i class="material-icons">label</i>
+                            <span>Gestion des Tags</span>
+                        </a>
+                    </li>
+                    <li class="{{ Request::is('admin/category') ? 'active' : '' }}">
+                        <a href="{{ route('admin.category.index') }}">
+                            <i class="material-icons">apps</i>
+                            <span>Gestion des Categories</span>
+                        </a>
+                    </li>
+                     <li class="{{ Request::is('admin/post') ? 'active' : '' }}">
+                        <a href="{{ route('admin.post.index') }}">
+                            <i class="material-icons">library_books</i>
+                            <span>Articles</span>
+                        </a>
+                    </li>
+                     <li class="{{ Request::is('admin/pending/post') ? 'active' : '' }}">
+                        <a href="{{ route('admin.post.pending') }}">
+                            <i class="material-icons">library_books</i>
+                            <span>Articles en attente</span>
+                        </a>
+                    </li>
                     <li>
                         <a class="dropdown-item" href="{{ route('logout') }}"
                            onclick="event.preventDefault();
@@ -60,12 +84,18 @@
                 @endif
                 @if(Request::is('author*'))
                     <li class="{{ Request::is('author/dashboard') ? 'active' : '' }}">
-                        <a href="{{ route('admin.dashboard') }}">
+                        <a href="{{ route('author.dashboard') }}">
                             <i class="material-icons">dashboard</i>
                             <span>Tableau de bord</span>
                         </a>
                     </li>
                     <li class="header">System</li>
+                    <li class="{{ Request::is('author/post') ? 'active' : '' }}">
+                        <a href="{{ route('author.post.index') }}">
+                            <i class="material-icons">library_books</i>
+                            <span>Articles</span>
+                        </a>
+                    </li>
                     <li>
                         <a class="dropdown-item" href="{{ route('logout') }}"
                            onclick="event.preventDefault();

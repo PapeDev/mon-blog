@@ -26,7 +26,7 @@
     <link href="{{ asset('back/css/style.css') }}" rel="stylesheet">
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="{{ asset('back/css/themes/all-themes.css') }}" rel="stylesheet" />
-
+    <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
 
     @stack('css')
 </head>
@@ -77,41 +77,24 @@
 <!-- Bootstrap Core Js -->
 <script src="{{ asset('back/plugins/bootstrap/js/bootstrap.js') }}"></script>
 
-<!-- Select Plugin Js -->
-<script src="{{ asset('back/plugins/bootstrap-select/js/bootstrap-select.js') }}"></script>
-
-<!-- Slimscroll Plugin Js -->
+ <!-- Slimscroll Plugin Js -->
 <script src="{{ asset('back/plugins/jquery-slimscroll/jquery.slimscroll.js') }}"></script>
 
-<!-- Waves Effect Plugin Js -->
+    <!-- Waves Effect Plugin Js -->
 <script src="{{ asset('back/plugins/node-waves/waves.js') }}"></script>
+<script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+{!! Toastr::message() !!}
+<script>
+        @if($errors->any())
+            @foreach($errors->all() as $error)
+                toastr.error('{{ $error }}', 'Error', {
+                    closeButton: true,
+                    progressBar: true,
+                });
+            @endforeach
+        @endif
+    </script>
 
-<!-- Jquery CountTo Plugin Js -->
-<script src="{{ asset('back/plugins/jquery-countto/jquery.countTo.js') }}"></script>
-
-<!-- Morris Plugin Js -->
-<script src="{{ asset('back/plugins/raphael/raphael.min.js') }}"></script>
-<script src="{{ asset('back/plugins/morrisjs/morris.js') }}"></script>
-
-<!-- ChartJs -->
-<script src="{{ asset('back/plugins/chartjs/Chart.bundle.js') }}"></script>
-
-<!-- Flot Charts Plugin Js -->
-<script src="{{ asset('back/plugins/flot-charts/jquery.flot.js') }}"></script>
-<script src="{{ asset('back/plugins/flot-charts/jquery.flot.resize.js') }}"></script>
-<script src="{{ asset('back/plugins/flot-charts/jquery.flot.pie.js') }}"></script>
-<script src="{{ asset('back/plugins/flot-charts/jquery.flot.categories.js') }}"></script>
-<script src="{{ asset('back/plugins/flot-charts/jquery.flot.time.js') }}"></script>
-
-<!-- Sparkline Chart Plugin Js -->
-<script src="{{ asset('back/plugins/jquery-sparkline/jquery.sparkline.js') }}"></script>
-
-<!-- Custom Js -->
-<script src="{{ asset('back/js/admin.js') }}"></script>
-<script src="{{ asset('back/js/pages/index.js') }}"></script>
-
-<!-- Demo Js -->
-<script src="{{ asset('back/js/demo.js') }}"></script>
 @stack('scripts')
 </body>
 </html>
