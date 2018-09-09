@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Author;
 
 use App\Post;
 use App\Category;
+use App\Notifications\NewAuthorPost;
 use App\Tag;
+use App\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 
@@ -91,8 +94,10 @@ class PostController extends Controller
 
         $post->categories()->attach($request->categories);
         $post->tags()->attach($request->tags);
+        $users = User::where('role_id', '1')->get();
+        Notification::send($users, new NewAuthorPost($post));
 
-        Toastr::success("L'article a été enregistré avec succes", 'Succes');
+        Toastr::success('Votre article a été enregistré avec succes', 'Succes');
         return redirect()->route('author.post.index');
     }
 
@@ -104,6 +109,11 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        if($post->user_id != Auth::id())
+        {
+            Toastr::error('Vous n etes pas autorisé à acceder à cet article', 'Erreur');
+            return redirect()->back();
+        }
         return view('author.post.show', compact('post'));
     }
 
@@ -115,6 +125,11 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        if($post->user_id != Auth::id())
+        {
+            Toastr::error('Vous n etes pas autorisé à acceder à cet article', 'Erreur');
+            return redirect()->back();
+        }
         $categories = Category::all();
         $tags = Tag::all();
         return view('author.post.edit', compact('categories', 'tags', 'post'));
@@ -129,6 +144,11 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        if($post->user_id != Auth::id())
+        {
+            Toastr::error('Vous n etes pas autorisé à acceder à cet article', 'Erreur');
+            return redirect()->back();
+        }
         $this->validate($request, [
             'title' => 'required',
             'image' => 'image',
@@ -178,7 +198,7 @@ class PostController extends Controller
         $post->categories()->sync($request->categories);
         $post->tags()->sync($request->tags);
 
-        Toastr::success("L'article a été modifie avec succes", 'Succes');
+        Toastr::success('Votre article a été modifié avec succes', 'Succes');
         return redirect()->route('author.post.index');
     }
 
@@ -190,6 +210,11 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        if($post->user_id != Auth::id())
+        {
+            Toastr::error('Vous n etes pas autorisé à acceder à cet article', 'Erreur');
+            return redirect()->back();
+        }
         //delete image
         if(Storage::disk('public')->exists('post/'.$post->image))
         {
@@ -199,7 +224,7 @@ class PostController extends Controller
         $post->tags()->detach();
 
         $post->delete();
-        Toastr::success("L'article a ete supprime avec succes", 'Succes');
+        Toastr::success('Votre article a été supprimé avec succes', 'Succes');
         return redirect()->route('author.post.index');
     }
 }

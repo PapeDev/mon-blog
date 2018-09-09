@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Post;
 use App\Category;
 use App\Tag;
+use App\Notifications\AuthorPostApproved;
 use Brian2694\Toastr\Facades\Toastr;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -198,10 +199,11 @@ class PostController extends Controller
         {
             $post->is_approved = true;
             $post->save();
-            Toastr::success("L'article a été approuve avec succes", 'Succes');
+            $post->user->notify(new AuthorPostApproved($post));
+            Toastr::success("L article a été approuve avec succes", 'Succes');
 
         }else{
-            Toastr::info("L'article a deja été approuve", 'Succes');
+            Toastr::info("L article a deja été approuve", 'Succes');
         }
 
         
